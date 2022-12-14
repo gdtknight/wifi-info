@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
-  private boolean isLoaded = false;
 
   @Override
   protected void doGet(
@@ -19,10 +18,6 @@ public class Controller extends HttpServlet {
       throws ServletException, IOException {
 
     ControllerHelper controllerHelper = new ControllerHelper(this, request, response);
-
-    if (!isLoaded) {
-      controllerHelper.loadWifiInfo();
-    }
 
     controllerHelper.doGet();
   }

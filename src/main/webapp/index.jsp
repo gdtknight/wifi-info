@@ -1,20 +1,37 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+
 <%@ page import="wifi.info.dto.WifiInfo" %>
+
+<%@ page import="wifi.info.service.WifiInfoService" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%!
-%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-
 <html>
+<%
+Boolean initialized = null;
+
+  if(request.getSession().getAttribute("init") == null) {
+    initialized = false;
+    System.out.println("init first");
+  } else {
+    initialized = (Boolean)request.getSession().getAttribute("init");
+  }
+%>
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" href="index.css">
   <title>Public Wifi Information</title>
+  <style>
+    td {
+      font-size: 8px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -40,14 +57,42 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <% List<WifiInfo> wifiInfoList = ${wifiInfoServiceHelper.publicWifiInfoList} %>
-        <% if (wifiInfoList.size() == 0) {%>
-          <td colspan="16" id="table-message">
+
+      <% if (!initialized) { %>
+
+        <tr>
+          <td colspan="16" id="table-message" style="text-align:center;">
             위치 정보를 입력한 후에 조회해 주세요
           </td>
+        </tr>
+
+      <% } else { %>
+
+        <%
+          WifiInfoService wifiInfoService = (WifiInfoService)request.getSession().getAttribute("wifiInfoService");
+          List<WifiInfo> wifiInfoList = wifiInfoService.getWifiInfoList();
+        %>
+        <% for (WifiInfo e: wifiInfoList) { %>
+          <tr>
+            <td> <%= e.getX_SWIFI_MGR_NO() %> </td>
+            <td> <%= e.getX_SWIFI_WRDOFC() %> </td>
+            <td> <%= e.getX_SWIFI_MAIN_NM() %> </td>
+            <td> <%= e.getX_SWIFI_ADRES1 () %> </td>
+            <td> <%= e.getX_SWIFI_ADRES2() %> </td>
+            <td> <%= e.getX_SWIFI_INSTL_FLOOR() %> </td>
+            <td> <%= e.getX_SWIFI_INSTL_TY() %> </td>
+            <td> <%= e.getX_SWIFI_INSTL_MBY() %> </td>
+            <td> <%= e.getX_SWIFI_SVC_SE() %> </td>
+            <td> <%= e.getX_SWIFI_CMCWR() %> </td>
+            <td> <%= e.getX_SWIFI_CNSTC_YEAR() %> </td>
+            <td> <%= e.getX_SWIFI_INOUT_DOOR() %> </td>
+            <td> <%= e.getX_SWIFI_REMARS3() %> </td>
+            <td> <%= e.getLAT() %> </td>
+            <td> <%= e.getLNT() %> </td>
+            <td> <%= e.getWORK_DTTM() %> </td>
+          </tr>
         <% } %>
-      </tr>
+      <% } %>
     </tbody>
   </table>
 </body>
