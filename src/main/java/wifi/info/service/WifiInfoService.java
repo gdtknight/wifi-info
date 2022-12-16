@@ -7,21 +7,15 @@ import wifi.info.dto.WifiInfo;
 
 public class WifiInfoService {
   static WifiInfoService wifiInfoService = new WifiInfoService();
-  List<WifiInfo> wifiInfoList;
 
   private WifiInfoService() {
-    wifiInfoList = new ArrayList<>();
   }
 
   public static WifiInfoService getInstance() {
     return wifiInfoService;
   }
 
-  public List<WifiInfo> getWifiInfoList() {
-    return wifiInfoList;
-  }
-
-  public void loadWifiInfo() {
+  public void loadWifiInfo(List<WifiInfo> wifiInfoList) {
     int rowsPerRequests = 1000;
     int totalRows = OpenApiService.getTbPublicWifiObj(1, 1).getTbPublicWifiInfo().getList_total_count();
     int totalRequests = (totalRows - 1) / rowsPerRequests + 1;
@@ -38,8 +32,11 @@ public class WifiInfoService {
       List<WifiInfo> list = OpenApiService.getTbPublicWifiObj(startIdx, endIdx)
           .getTbPublicWifiInfo()
           .getRow();
-      wifiInfoList.addAll(list);
+      for (WifiInfo e : list) {
+        if (!wifiInfoList.contains(e)) {
+          wifiInfoList.add(e);
+        }
+      }
     }
-
   }
 }
