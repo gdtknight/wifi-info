@@ -3,6 +3,7 @@ package wifi.info.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.EqualsAndHashCode;
 // X_SWIFI_MGR_NO
 // X_SWIFI_WRDOFC
 // X_SWIFI_MAIN_NM
@@ -23,6 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
+@EqualsAndHashCode
 public class WifiInfo {
   private final String X_SWIFI_MGR_NO; // 관리번호
   private final String X_SWIFI_WRDOFC; // 자치구
